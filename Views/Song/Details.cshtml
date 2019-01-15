@@ -1,0 +1,50 @@
+﻿@model MusicApp.Models.SongModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>SongModel</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.title)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.title)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.author)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.author)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.orginalUrl)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.orginalUrl)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>

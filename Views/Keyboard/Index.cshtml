@@ -1,0 +1,511 @@
+﻿@model MusicApp.Models.SongModel
+
+@{
+    Layout = "~/Views/Shared/_keyboardShared.cshtml"; 
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>KeyboardView</title>
+    <link href="@Url.Content("~/Content/Keyboard/styles.css")" rel="stylesheet" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/13.3.11/Tone.min.js"></script>
+
+   @* <script src="@Url.Content("~/Scripts/app.js")" type="text/javascript"></script>*@
+
+
+   
+</head>
+<body>
+
+    <h1>Music Maker</h1>
+
+    <div class="drums">
+
+       
+        <button onclick="testSong()" id="testButton"> TestSong</button>
+        <button onclick="timeTest()"> TimeTest</button>
+        <label>Tempo</label>
+        @Html.TextBox("tempo", null, new { @class = "form-control" })  
+        <button id="setTempoButton" onclick="setTempo()">Set Tempo</button>
+
+        <label id="testLabel"> Testing label </label>
+
+
+        <script>
+        var seq = null;
+
+        function setTempo(){
+            Tone.Transport.bpm.value = parseInt(document.getElementById("tempo").value);
+            document.getElementById("tempo").value="";
+        }
+
+        var song =@Html.Raw(Json.Encode(Model));
+
+            //****************************************************************************************************************************************
+        function timeTest(){
+
+                const cKey = [document.querySelector(`button:nth-child(${1})`), "w"];
+                const dKey = [document.querySelector(`button:nth-child(${2})`), "w"];
+                const eKey = [document.querySelector(`button:nth-child(${3})`), "w"];
+                const fKey = [document.querySelector(`button:nth-child(${4})`), "w"];
+                const gKey = [document.querySelector(`button:nth-child(${5})`), "w"];
+                const aKey = [document.querySelector(`button:nth-child(${6})`), "w"];
+                const hKey = [document.querySelector(`button:nth-child(${7})`), "w"];
+                const c2Key = [document.querySelector(`button:nth-child(${8})`), "w"];
+                const d2Key = [document.querySelector(`button:nth-child(${9})`), "w"];
+                const e2Key = [document.querySelector(`button:nth-child(${11})`), "w"];
+                const f2Key = [document.querySelector(`button:nth-child(${12})`), "w"];
+                const g2Key = [document.querySelector(`button:nth-child(${13})`), "w"];
+                const a2Key = [document.querySelector(`button:nth-child(${14})`), "w"];
+                const h2Key = [document.querySelector(`button:nth-child(${15})`), "w"];
+                const c3Key = [document.querySelector(`button:nth-child(${16})`), "w"];
+
+                const cisKey = [document.querySelector(".black"), "b"];
+                const disKey = [document.querySelector(".black2"), "b"];
+                const fisKey = [document.querySelector(".black3"), "b"];
+                const gisKey = [document.querySelector(".black4"), "b"];
+                const bKey =   [document.querySelector(".black5"), "b"];
+                const cis2Key = [document.querySelector(".black6"), "b"];
+                const dis2Key = [document.querySelector(".black7"), "b"];
+                const fis2Key = [document.querySelector(".black8"), "b"];
+                const gis2Key = [document.querySelector(".black9"), "b"];
+                const b2Key = [document.querySelector(".black10") ,"b"];
+
+
+
+                var keys = {
+                    "C4": cKey,
+                    "C#4": cisKey,
+                    "D4": dKey,
+                    "D#4": disKey,
+                    "E4": eKey,
+                    "F4": fKey,
+                    "F#4": fisKey,
+                    "G4": gKey,
+                    "G#4": gisKey,
+                    "A4": aKey,
+                    "A#4": bKey,
+                    "B4": hKey,
+                    "C5": c2Key,
+                    "C#5": cis2Key,
+                    "D5": d2Key,
+                    "D#5": dis2Key,
+                    "E5": e2Key,
+                    "F5": f2Key,
+                    "F#5": fis2Key,
+                    "G5": g2Key,
+                    "G#5": gis2Key,
+                    "A5": a2Key,
+                    "A#5": b2Key,
+                    "B5": h2Key,
+                    "C6": c3Key,
+                }
+            var synth = new Tone.Synth().toMaster();
+
+            //synth.sync();
+            //Tone.Transport.bpm.value = 80;
+            //synth.triggerAttackRelease("C4", "8n",0);
+            //synth.triggerAttackRelease("D4", "8n",Tone.Time("8n"));
+            //synth.triggerAttackRelease("A4", "8n",Tone.Time("4n"));
+            //synth.triggerAttackRelease("D4", "8n",Tone.Time("4n")+Tone.Time("8n"));
+            //synth.triggerAttackRelease("C4", "8n",Tone.Time("4n")+Tone.Time("4n"));
+            //Tone.Transport.start();
+
+
+            console.log("SONG: "+song);
+                //console.log(bars);
+            var bars = song.bars;
+            var notes = [];
+            var lengths = [];
+            var barNoteCounters = [];
+            var tempArr = [];
+            var barUsedNotes = [];
+
+            bars.forEach(bar=>{
+                bar.notes.forEach(note=>{
+                    tempArr.push(note);
+                });
+                notes.push(tempArr);
+                tempArr=[];
+
+                bar.lengths.forEach(length=>{
+                    tempArr.push(length);
+                })
+                lengths.push(tempArr);
+                tempArr=[];
+
+                barNoteCounters.push(bar.noteCounter);
+            })
+            console.log("NOTES" + notes);
+            console.log(lengths);
+
+
+            var notesArr= [];
+            var currentTime=0;
+            var usedNotes=[];
+            var usedNotesBarIndex = 0;
+            var barsUsedNotes = [];
+            var barUsedNotes = [];
+            var barUsedKeys = [];
+            var barsUsedKeys = [];
+            var barTime= Tone.Time("1n");
+            var barNoteCounters = [];
+
+            bars.forEach(bar=>{
+                for(var i =0; i< bar.notes.length; i++){
+                    notesArr.push({
+                        time: currentTime,
+                        note: bar.notes[i],
+                        dur: bar.lengths[i]
+                    })
+                    currentTime+= Tone.Time(bar.lengths[i]+"n");
+                }
+                   
+
+
+                    bar.notes.forEach(note=>{
+                        if(!barUsedNotes.includes(note)){
+                            barUsedNotes.push(note);
+                            barUsedKeys.push(keys[note]);
+                        }
+                    })
+                    console.log("bar used Notes: " + barUsedNotes);
+                    barsUsedKeys.push(barUsedKeys);
+                    barUsedKeys=[];
+                    barUsedNotes = [];
+                    barNoteCounters.push(bar.noteCounter);
+             
+            });
+            console.log("bars used keys" + barsUsedKeys);
+
+
+            var index = 0;
+            var barIndex= 0;
+           
+            
+            let part = new Tone.Part(function(time, event){
+
+                if(index== barNoteCounters[barIndex]){
+                
+                    barsUsedKeys[barIndex].forEach(key => {
+                        if (key[1] == "w")
+                            key[0].style.backgroundColor = "white";
+                        else
+                            key[0].style.backgroundColor = "black";
+                    });
+                    barIndex++;
+                    if (barIndex == barNoteCounters.length)
+                        barIndex = 0;
+                    index = 0;
+                }
+                barsUsedKeys[barIndex].forEach(key=> {
+                    key[0].style.backgroundColor = "green";
+                });
+
+                Tone.Draw.schedule(function () {
+                    keys[event.note][0].style.backgroundColor = "red";
+                    index++;
+                }, time) //use AudioContext time of the event
+
+                synth.triggerAttackRelease(event.note, event.dur, time)
+
+            }, notesArr);
+          
+         //   Tone.Transport.bpm.value = 100;
+            part.start(0)
+            Tone.Transport.start();
+
+        }
+        
+       
+        var synth = new Tone.Synth().toMaster()
+        
+
+        function playNote(key){
+            Tone.Transport.start();
+            synth.triggerAttack(key.id);
+        }
+
+        function release(){
+            synth.triggerRelease();
+            Tone.Transport.stop();
+        }
+
+
+        function testSong(){
+            const cKey = [document.querySelector(`button:nth-child(${1})`), "w"];
+            const dKey = [document.querySelector(`button:nth-child(${2})`), "w"];
+            const eKey = [document.querySelector(`button:nth-child(${3})`), "w"];
+            const fKey = [document.querySelector(`button:nth-child(${4})`), "w"];
+            const gKey = [document.querySelector(`button:nth-child(${5})`), "w"];
+            const aKey = [document.querySelector(`button:nth-child(${6})`), "w"];
+            const hKey = [document.querySelector(`button:nth-child(${7})`), "w"];
+            const c2Key = [document.querySelector(`button:nth-child(${8})`), "w"];
+            const d2Key = [document.querySelector(`button:nth-child(${9})`), "w"];
+            const e2Key = [document.querySelector(`button:nth-child(${10})`), "w"];
+
+            const cisKey = document.querySelector(".black", "b");
+            const disKey = document.querySelector(".black2", "b");
+            const fisKey = [document.querySelector(".black3"), "b"];
+            const gisKey = [document.querySelector(".black4"), "b"];
+            const bKey = document.querySelector(".black5", "b");
+            const cis2Key = document.querySelector(".black6", "b");
+            const dis2Key = document.querySelector(".black7", "b");
+
+            var keys = {
+                "C4": cKey,
+                "C#4": cisKey,
+                "D4": dKey,
+                "D#4": disKey,
+                "E4": eKey,
+                "F4": fKey,
+                "F#4": fisKey,
+                "G4": gKey,
+                "G#4": gisKey,
+                "A4": aKey,
+                "B4": bKey,
+                "H4": hKey,
+                "C5": c2Key,
+                "C#5": cis2Key,
+                "D5": d2Key,
+                "D#5": dis2Key,
+                "E5": e2Key
+            }
+
+
+
+           // document.getElementById("testLabel").innerHTML = song.melody.lengths;
+           
+            
+
+            console.log("SONG: "+song);
+            //console.log(bars);
+            var bars = song.bars;
+            var notes = [];
+            var lengths = [];
+            var barNoteCounters = [];
+            var tempArr = [];
+            var barUsedNotes = [];
+
+            bars.forEach(bar=>{
+                bar.notes.forEach(note=>{
+                    tempArr.push(note);
+                });
+                notes.push(tempArr);
+                tempArr=[];
+
+                bar.lengths.forEach(length=>{
+                    tempArr.push(length);
+                })
+                lengths.push(tempArr);
+                tempArr=[];
+
+                barNoteCounters.push(bar.noteCounter);
+            })
+            console.log(notes);
+            console.log(lengths);
+            console.log(barNoteCounters);
+
+            
+            
+
+            var barNotesCounters = [];
+            var usedNotes = [];
+            var barUsedKeys = [];
+            var barsUsedKeys = [];
+
+
+            bars.forEach(bar => {
+                bar.notes.forEach(note=> {
+                    if (!usedNotes.includes(note)) {
+                        usedNotes.push(note);
+                    }
+                    barUsedKeys.push(keys[note]);
+                })
+                barsUsedKeys.push(barUsedKeys);
+                barUsedKeys = [];
+                barNotesCounters.push(bar.noteCounter);
+            });
+
+
+            var synth = new Tone.Synth().toMaster();
+
+            var index = 0;
+            var barIndex = 0;
+          //  console.log(barsUsedKeys);
+            //pass in an array of events
+
+            //console.log(bars);
+            seq = new Tone.Sequence(function (time, note) {
+
+
+                if (index == barNotesCounters[barIndex]) {
+                    console.log("RESETUJE");
+                    barsUsedKeys[barIndex].forEach(key => {
+                        if (key[1] == "w")
+                            key[0].style.backgroundColor = "white";
+                        else
+                            key[0].style.backgroundColor = "black";
+                    });
+                    barIndex++;
+                    if (barIndex == barNotesCounters.length)
+                        barIndex = 0;
+                    index = 0;
+                }
+                barsUsedKeys[barIndex].forEach(key=> {
+                    key[0].style.backgroundColor = "green";
+                });
+
+
+                Tone.Draw.schedule(function () {
+                    keys[note][0].style.backgroundColor = "red";
+                    index++;
+                }, time) //use AudioContext time of the event
+                //subdivisions are given as subarrays
+               
+                synth.triggerAttackRelease(note, time)
+            }, notes, "1n");
+
+            seq.start();
+            seq.loop = 2;
+            Tone.Transport.bpm.value = 180;
+            Tone.Transport.start();
+
+        }
+
+
+        function playSong(){
+
+        }
+
+        function test2() {
+            var seq = null;
+
+
+            const cKey = [document.querySelector(`button:nth-child(${1})`), "w"];
+            const dKey = [document.querySelector(`button:nth-child(${2})`), "w"];
+            const eKey = [document.querySelector(`button:nth-child(${3})`), "w"];
+            const fKey = [document.querySelector(`button:nth-child(${4})`), "w"];
+            const gKey = [document.querySelector(`button:nth-child(${5})`), "w"];
+            const aKey = [document.querySelector(`button:nth-child(${6})`), "w"];
+            const hKey = [document.querySelector(`button:nth-child(${7})`), "w"];
+            const c2Key = [document.querySelector(`button:nth-child(${8})`), "w"];
+            const d2Key = [document.querySelector(`button:nth-child(${9})`), "w"];
+            const e2Key = [document.querySelector(`button:nth-child(${10})`), "w"];
+
+            const cisKey = document.querySelector(".black", "b");
+            const disKey = document.querySelector(".black2", "b");
+            const fisKey = [document.querySelector(".black3"), "b"];
+            const gisKey = [document.querySelector(".black4"), "b"];
+            const bKey = document.querySelector(".black5", "b");
+            const cis2Key = document.querySelector(".black6", "b");
+            const dis2Key = document.querySelector(".black7", "b");
+
+            var keys = {
+                "C4": cKey,
+                "D4": dKey,
+                "E4": eKey,
+                "F4": fKey,
+                "G4": gKey,
+                "A4": aKey,
+                "F#4": fisKey,
+                "G#4": gisKey
+            }
+
+            var bar1 = ["C4","D4","E4","F4"];
+            var bar2 = ["D4", "C4"];
+            var bar3 = ["F4"];
+            var bar4 = ["G#4", "F#4", "G4", "A4"];
+
+            var bars = [];
+            bars.push(bar1);
+            bars.push(bar2);
+            bars.push(bar3);
+            bars.push(bar4);
+
+
+            var barsNotesCounters = [];
+            barsNotesCounters.push(bar1.length);
+            barsNotesCounters.push(bar2.length);
+            barsNotesCounters.push(bar3.length);
+            barsNotesCounters.push(bar4.length);
+
+            var barsUsedKeys = [];
+
+            var usedNotes = [];
+
+            var barUsedKeys = [];
+            var barNotesCounters = [];
+
+
+            bars.forEach(bar => {
+                bar.forEach(note=> {
+                    if (!usedNotes.includes(note)) {
+                        usedNotes.push(note);
+
+                    }
+                    barUsedKeys.push(keys[note]);
+                })
+                barsUsedKeys.push(barUsedKeys);
+                barUsedKeys = [];
+                barNotesCounters.push(bar.length);
+            });
+            console.log("Used Notes: " + usedNotes);
+            console.log("bars used keys" + barsUsedKeys);
+            console.log("dlugosci taktow: " + barNotesCounters);
+
+
+
+
+
+            var synth = new Tone.Synth().toMaster();
+
+            var index = 0;
+            var barIndex = 0;
+
+            //pass in an array of events
+            seq = new Tone.Sequence(function (time, note) {
+
+
+                if (index == barNotesCounters[barIndex]) {
+                    console.log("RESETUJE");
+                    barsUsedKeys[barIndex].forEach(key => {
+                        if (key[1] == "w")
+                            key[0].style.backgroundColor = "white";
+                        else
+                            key[0].style.backgroundColor = "black";
+                    });
+                    barIndex++;
+                    if (barIndex == barNotesCounters.length)
+                        barIndex = 0;
+                    index = 0;
+                }
+                barsUsedKeys[barIndex].forEach(key=> {
+                    key[0].style.backgroundColor = "green";
+                });
+
+
+                Tone.Draw.schedule(function () {
+                    keys[note][0].style.backgroundColor = "red";
+                    index++;
+                }, time) //use AudioContext time of the event
+                //subdivisions are given as subarrays
+                synth.triggerAttackRelease(note, time)
+            }, bars, "1n");
+
+            seq.start();
+            seq.loop = 2;
+            Tone.Transport.bpm.value = 200;
+            Tone.Transport.start();
+
+
+
+
+        }
+        </script>
+</body>
+
+</html>

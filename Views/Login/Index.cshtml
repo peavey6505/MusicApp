@@ -1,0 +1,58 @@
+﻿@model MusicApp.Models.UserModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div> 
+        @using (Html.BeginForm("Authenticate","Login",FormMethod.Post))
+        {
+            <div class="bs-example" style="border:2px solid gray;">
+
+                <div class="form-group centerlook">
+                    <h1> Login </h1>
+                </div>
+                <div class="form-group centerlook">
+                    <label>User Name: </label>
+                    @Html.EditorFor(model => model.Username)*
+                    @Html.ValidationMessageFor(model => model.Username)
+                </div>
+                <div class="form-group centerlook">
+                    <label>Password:</label>
+                    @Html.EditorFor(model => model.Password) *
+                    @Html.ValidationMessageFor(model => model.Password)
+
+                </div>
+                <div class="form-group centerlook">
+                    
+                    @Html.RadioButtonFor(m => m.Role, "student")
+                    @Html.RadioButtonFor(m => m.Role, "teacher")
+                    @Html.RadioButtonFor(m => m.Role, "admin")
+
+                </div>
+                <div class="form-group error">
+                 
+                    @if (@ViewBag.Error != null)
+                    {
+
+                        <label> @ViewBag.Error</label>
+                    }
+                </div>
+                <div class="loginbtn">
+
+                    <input type="submit" value="Login" class="btn btn-primary" />
+
+                </div>
+            </div>
+        }  
+    </div>
+</body>
+</html>

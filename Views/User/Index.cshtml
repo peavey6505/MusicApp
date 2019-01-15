@@ -1,0 +1,28 @@
+﻿@model List<MusicApp.Models.UserModel>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    @Html.ActionLink("Test", "Index", "User", null, null);
+
+
+   @foreach(var user in Model)
+   {
+       <p>@user.id</p>
+    <p>@user.username</p>
+    <p>@user.password</p>
+
+   }
+
+
+</body>
+</html>

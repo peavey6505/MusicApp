@@ -1,0 +1,27 @@
+﻿@model MusicApp.Models.SongModeViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>View</title>
+</head>
+<body>
+    <div> 
+        @using (Html.BeginForm("LoadSong", "KeyboardMode", FormMethod.Post))
+        {
+                foreach (var song in Model.Songs)
+                {
+                    <label>@Html.RadioButtonFor(model => model.ChosenTitle, song.title) @song.title</label>
+                    <br />
+                }
+            <input type="submit" value="Login" class="btn btn-primary" />
+        }
+    </div>
+</body>
+</html>

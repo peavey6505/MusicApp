@@ -1,0 +1,44 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>_keyboardShared</title>
+</head>
+<body>
+    <div>
+        <button class="white" id="C4" onmousedown="playNote(this)" onmouseup="release()"></button>
+        <button class="white" id="D4" onmousedown="playNote(this)" onmouseup="release()"></button>
+        <button class="white" id="E4" onmousedown="playNote(this)" onmouseup="release()"></button>
+        <button class="white" id="F4" onmousedown="playNote(this)" onmouseup="release()"></button>
+        <button class="white" id="G4" onmousedown="playNote(this)" onmouseup="release()"></button>
+        <button class="white" id="A4" onmousedown="playNote(this)" onmouseup="release()"></button>
+        <button class="white" id="B4" onmousedown="playNote(this)" onmouseup="release()"></button>
+        <button class="white" id="C5" onmousedown="playNote(this)" onmouseup="release()"></button>
+        <button class="white" id="D5" onmousedown="playNote(this)" onmouseup="release()"></button>
+        <button class="white" id="E5" onmousedown="playNote(this)" onmouseup="release()"></button>
+        <button class="white" id="F5" onmousedown="playNote(this)" onmouseup="release()"></button>
+        <button class="white" id="G5" onmousedown="playNote(this)" onmouseup="release()"></button>
+        <button class="white" id="A5" onmousedown="playNote(this)" onmouseup="release()"></button>
+        <button class="white" id="B5" onmousedown="playNote(this)" onmouseup="release()"></button>
+        <button class="white" id="C6" onmousedown="playNote(this)" onmouseup="release()"></button>
+
+        <button class="black" id="C#4" onmousedown="playNote(this)" onmouseup="release()"></button>
+        <button class="black2" id="D#4" onmousedown="playNote(this)" onmouseup="release()"></button>
+        <button class="black3" id="F#4" onmousedown="playNote(this)" onmouseup="release()"></button>
+        <button class="black4" id="G#4" onmousedown="playNote(this)" onmouseup="release()"></button>
+        <button class="black5" id="A#4" onmousedown="playNote(this)" onmouseup="release()"></button>
+        <button class="black6" id="C#5" onmousedown="playNote(this)" onmouseup="release()"></button>
+        <button class="black7" id="D#5" onmousedown="playNote(this)" onmouseup="release()"></button>
+        <button class="black8" id="F#5" onmousedown="playNote(this)" onmouseup="release()"></button>
+        <button class="black9" id="G#5" onmousedown="playNote(this)" onmouseup="release()"></button>
+        <button class="black10" id="A#5" onmousedown="playNote(this)" onmouseup="release()"></button>
+    </div>
+    @RenderBody()
+</body>
+</html>

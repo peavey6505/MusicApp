@@ -1,0 +1,29 @@
+﻿@model MusicApp.Models.SongModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>SongView</title>
+</head>
+<body>
+    <div> 
+        @using (Html.BeginForm())
+        {
+            <div class="editor-label">
+                @Html.LabelFor(m => m.title)
+            </div>
+            <div class="editor-label">
+                @Html.TextBoxFor(m => m.author)
+            </div>
+
+            <input type="submit" value="Test Form" />
+        }
+    </div>
+</body>
+</html>
