@@ -16,7 +16,7 @@ namespace MusicApp
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Login", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "SongAssignment", action = "Index", id = UrlParameter.Optional }
             );
         }
     }

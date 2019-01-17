@@ -1,0 +1,78 @@
+﻿@model MusicApp.Models.SongAssignmentViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div> 
+        <table>
+            <tr>
+                <th> Imię </th>
+                <th> Nazwisko </th>
+            </tr>
+            @foreach (var user in Model.Users)
+            {
+                <tr>@user.FirstName @user.LastName</tr>}
+        </table>
+       
+        <table>
+            <tr>
+                <th> Tytuł </th>
+                <th> Autor </th>
+                <th> Tempo</th>
+            </tr>
+            @foreach (var song in Model.SongsDetails)
+            {
+                <tr>
+                    <td> @song.Title</td>
+                    <td> @song.Author</td>
+                    <td> @song.OrginalTempo</td>
+                </tr>
+            }
+           
+            
+        </table>
+    </div>
+    <p>Dodajemy</p>
+    <div class="form-control">
+        @using (Html.BeginForm("DisplayAssignments", "SongAssignment", FormMethod.Post,Model))
+        {
+            @Html.DropDownListFor(m=>m.ChosenStudent, new SelectList(Model.Users.Select(user => user.FirstName + " " + user.LastName).ToList()), null, new { @class = "form-control" });
+            <input type="submit" value="Show Assignments" class="btn btn-primary" />
+        }
+    </div>
+    <div>
+        @if ( Model.SongAssignmentsDisplay != null)
+        {
+            <table>
+                <tr>
+                    <th> Tytuł </th>
+                    <th> Autor </th>
+                    <th> Oryginalne Tempo</th>
+                    <th> Startowe Tempo</th>
+                    <th> Zadane Tempo</th>
+                </tr>
+                @foreach (var songAssign in Model.SongAssignmentsDisplay)
+                {
+                    <tr>
+                        <td> @songAssign.Author</td>
+                        <td> @songAssign.Title</td>
+                        <td> @songAssign.OrginalTempo</td>
+                        <td> @songAssign.StartTempo</td>
+                        <td> @songAssign.DestinationTempo</td>
+                       
+                    </tr>
+                }
+                </table>
+        }
+</div>
+</body>
+</html>

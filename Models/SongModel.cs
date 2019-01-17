@@ -13,9 +13,7 @@ namespace MusicApp.Models
         [BsonId]
         public ObjectId Id { get; set; }
         public string title { get; set; }
-        public string author { get; set; }
         public Bar[] bars { get; set; }
-        public string orginalUrl { get; set; }
     }
 
     public class Bar

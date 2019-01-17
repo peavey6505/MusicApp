@@ -17,50 +17,21 @@ namespace MusicApp.Controllers
         private IMongoCollection<SongModel> songCollection;
         String message = "";
 
+
+
         List<SongModel> tempSongs;
 
         public SongController()
         {
-            //dbContext = new MongoDbContext();
-            //songCollection = dbContext.db.GetCollection<SongModel>("songs");
-
-            var client = new MongoClient();
-            var db = client.GetDatabase("MusicAppDb");
-            var coll = db.GetCollection<SongModel>("songs");
-
-            var myId = new ObjectId("5c33f2ceb4a408031f33af91");
-
-            var result = coll
-                .Find(user => user.Id == myId)
-                .ToListAsync()
-                .Result;
-
-
-            tempSongs = result;
            
-
             
         }
 
         // GET: Songs
         public ActionResult Index()
         {
-            String notes = "";
-            string lengths = "";
 
-            //foreach (var song in tempSongs)
-            //{
-            //    foreach (var note in song.melody.notes)
-            //        notes += note + "\n";
-            //    foreach (var length in song.melody.lengths)
-            //        lengths += length + "\n";
-            //}
-
-            string result = notes + lengths;
-            
-           
-
-            return Content(result);
+            return View();
         }
 
         // GET: Song/Details/5
@@ -81,9 +52,9 @@ namespace MusicApp.Controllers
         [HttpPost]
         public ActionResult Create(SongModel song)
         {
+
             try
             {
-                // TODO: Add insert logic here
 
                 songCollection.InsertOne(song);
                 return RedirectToAction("Index");
@@ -111,7 +82,7 @@ namespace MusicApp.Controllers
                 var filter = Builders<SongModel>.Filter.Eq("_id", ObjectId.Parse(id));
                 var update = Builders<SongModel>.Update
                     .Set("title", song.title)
-                    .Set("author", song.author);
+                    ;
 
 
                     var result = songCollection.UpdateOne(filter, update);
